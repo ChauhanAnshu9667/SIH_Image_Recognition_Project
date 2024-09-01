@@ -1,28 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="air.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+        integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
 </head>
+
 <body>
     <div class="container">
         <!-- Sidebar -->
         <div class="sidebar">
             <div>
-                <img id=logo src="{{ url_for('static', filename='images/logo3.png') }}"> 
+                <img id=logo src="{{ url_for('static', filename='images/logo3.png') }}">
             </div>
-            
+
             <h2>Home</h2>
             <ul>
-                
+
                 <li><a href="#">Profile</a></li>
                 <li><a href="#">Phrasebook</a></li>
                 <li><a href="#">Settings</a></li>
@@ -36,7 +41,7 @@
             <div class="topbar">
                 <h1>Dashboard</h1>
             </div>
-            
+
             <!-- Content Area -->
             <div class="content-area">
                 <div class="cam">
@@ -48,16 +53,18 @@
                         <div class="recon-text">
                             <div id="output-text">Recognized Text: </div>
                         </div><!-- Button to trigger speech synthesis -->
-                        
+
                         <div class="btn">
                             <button class="speak" onclick="speakOutput()">Speak</button>
                             <button class="speak" onclick="clearOutput()">Clear</button>
+                            <button class="speak" id="start-camera">Start Camera</button>
                         </div>
                         
-                        
+
+
                     </div>
                 </div>
-                
+
 
                 <div class="sign">
                     <h1> ISL Finger Spelling Dictionary</h1>
@@ -65,10 +72,33 @@
                     <img src="{{ url_for('static', filename='images/signs3.jpeg') }}">
                 </div>
             </div>
-            
+
         </div>
     </div>
     <script>
+
+        window.onload = async function () {
+            try {
+                // Request access to the user's camera
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                document.getElementById('video-stream').srcObject = stream;
+            } catch (err) {
+                console.error("Error accessing the camera: ", err);
+                alert("Please allow camera access to use this feature.");
+            }
+        }
+
+
+        document.getElementById('start-camera').addEventListener('click', async function () {
+            try {
+                // Request access to the user's camera
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                document.getElementById('video-stream').srcObject = stream;
+            } catch (err) {
+                console.error("Error accessing the camera: ", err);
+                alert("Please allow camera access to use this feature.");
+            }
+        });
         function updateOutput() {
             fetch('/get_output')
                 .then(response => response.json())
@@ -92,6 +122,8 @@
 
         // Update the output every 1 second
         setInterval(updateOutput, 1000);
+
     </script>
 </body>
+
 </html>
