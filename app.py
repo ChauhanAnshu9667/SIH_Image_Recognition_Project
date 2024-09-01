@@ -36,7 +36,7 @@ def speak_text(text):
     output = ""  # Clear the output after speaking
 
 def generate_frames():
-    cap = cv2.VideoCapture(0)
+    cap = cv2.VideoCapture(1)
     if not cap.isOpened():
         print("Error: Could not open video capture.")
         return
